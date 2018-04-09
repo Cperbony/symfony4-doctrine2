@@ -34,6 +34,28 @@ class Time
      */
     private $ativo = 1;
 
+    /**
+     * @var Campeonato
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Campeonato", mappedBy="times")
+     */
+    private $campeonatos;
+
+    /**
+     * @var Partida
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Partida", mappedBy="time_casa")
+     */
+    private $partidas_casa;
+
+    /**
+     * @var Partida
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Partida", mappedBy="time_visitante")
+     */
+    private $partidas_visitante;
+
+
     public function getId()
     {
         return $this->id;
@@ -92,6 +114,64 @@ class Time
         $this->ativo = $ativo;
         return $this;
     }
+
+    /**
+     * @return Campeonato
+     */
+    public function getCampeonatos(): Campeonato
+    {
+        return $this->campeonatos;
+    }
+
+    /**
+     * @param Campeonato $campeonatos
+     * @return Time
+     */
+    public function setCampeonatos(Campeonato $campeonatos): Time
+    {
+        $this->campeonatos = $campeonatos;
+        return $this;
+    }
+
+    /**
+     * @return Partida
+     */
+    public function getPartidasCasa(): Partida
+    {
+        return $this->partidas_casa;
+    }
+
+    /**
+     * @param Partida $partidas_casa
+     * @return Time
+     */
+    public function setPartidasCasa(Partida $partidas_casa): Time
+    {
+        $this->partidas_casa = $partidas_casa;
+        return $this;
+    }
+
+    /**
+     * @return Partida
+     */
+    public function getPartidasVisitante(): Partida
+    {
+        return $this->partidas_visitante;
+    }
+
+    /**
+     * @param Partida $partidas_visitante
+     * @return Time
+     */
+    public function setPartidasVisitante(Partida $partidas_visitante): Time
+    {
+        $this->partidas_visitante = $partidas_visitante;
+        return $this;
+    }
+
+
+
+
 
 
 }

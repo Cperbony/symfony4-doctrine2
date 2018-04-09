@@ -28,6 +28,22 @@ class Organizacao
      */
     private $campeonatos;
 
+    /**
+     * @var Organizacao
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organizacao", inversedBy="filhos")
+     *
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    private $pai;
+
+    /**
+     * @var Organizacao
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Organizacao", mappedBy="pai")
+     */
+    private $filhos;
+
 
     public function getId()
     {
@@ -69,5 +85,43 @@ class Organizacao
         $this->campeonatos = $campeonatos;
         return $this;
     }
+
+    /**
+     * @return Organizacao
+     */
+    public function getPai(): Organizacao
+    {
+        return $this->pai;
+    }
+
+    /**
+     * @param Organizacao $pai
+     * @return Organizacao
+     */
+    public function setPai(Organizacao $pai): Organizacao
+    {
+        $this->pai = $pai;
+        return $this;
+    }
+
+    /**
+     * @return Organizacao
+     */
+    public function getFilhos(): Organizacao
+    {
+        return $this->filhos;
+    }
+
+    /**
+     * @param Organizacao $filhos
+     * @return Organizacao
+     */
+    public function setFilhos(Organizacao $filhos): Organizacao
+    {
+        $this->filhos = $filhos;
+        return $this;
+    }
+
+    
 
 }
