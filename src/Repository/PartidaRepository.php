@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Partida;
+use App\Entity\Time;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,32 +20,41 @@ class PartidaRepository extends ServiceEntityRepository
         parent::__construct($registry, Partida::class);
     }
 
-//    /**
-//     * @return Partida[] Returns an array of Partida objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Time $time
+     * @return mixed
+     */
+    public function getPartidasPorTime(Time $time)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $q = $this->createQueryBuilder("p")
+            ->innerJoin("p.campeonato", "c")
+            ->innerJoin("App\Entity\Time", 't', 'WITH',
+                't.id = p.time_casa OR t.id = p.time_visitante')
+            ->where("t.id = :id")
+            ->setParameter("id", $time)
+            ->getQuery();
 
-    /*
-    public function findOneBySomeField($value): ?Partida
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $q->getResult();
     }
-    */
+
+    /**
+     * @return mixed
+     */
+    public function getPartidasPorData() {
+        $q = $this->createQueryBuilder("p");
+            $q->where(
+                $q->expr()->between("p.data_partida", ':data1', ':data2')
+            );
+
+            $q->setParameter('data1', '2018-01-10 00:00:00');
+            $q->setParameter('data2', '2018-01-15 00:00:00');
+
+//            $q->andWhere($q->expr()->orX(
+//               $q->expr()->like(),
+//               $q->expr()->notIn()
+//            ));
+
+            return $q->getQuery()->getResult();
+    }
+
 }

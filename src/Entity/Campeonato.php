@@ -121,7 +121,4 @@ class Campeonato
         $this->partidas = $partidas;
         return $this;
     }
-
-
-
 }
